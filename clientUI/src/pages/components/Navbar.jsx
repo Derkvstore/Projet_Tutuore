@@ -15,9 +15,10 @@ function Navbar() {
             alt="Logo Techno-Lab"
             className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-blue-600 shadow-md object-cover"
           />
-          <span className="text-xl sm:text-2xl md:text-3xl font-extrabold uppercase tracking-wide text-blue-700">
-            Techno-Lab ISTA
-          </span>
+         <span className="text-base sm:text-lg md:text-xl font-extrabold uppercase tracking-wide text-blue-600">
+  Institut Supérieur de Technologies Appliquées
+</span>
+
         </div>
 
         {/* Burger menu */}

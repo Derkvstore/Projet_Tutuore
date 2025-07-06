@@ -11,11 +11,11 @@ function MainContent() {
                       style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}
                     >
                       <h1 className="text-3xl sm:text-4xl font-bold text-blue-700 mb-6">
-                        Bienvenue à Techno-Lab Ista !
+                        Bienvenue à TECHNO-LAB <span class="text-red-600">ISTA</span>
+                  
                       </h1>
                       <p className="text-gray-700 text-base sm:text-lg leading-relaxed">
-                        Restez informé, suivez votre progression et communiquez
-                        facilement avec votre établissement.
+                        🚀 Découvrez l'excellence avec Techno-Lab ISTA
                       </p>
 
                       
