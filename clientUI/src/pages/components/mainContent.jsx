@@ -12,7 +12,7 @@ function MainContent() {
                     >
                       <h1 className="text-3xl sm:text-4xl font-bold text-blue-700 mb-6">
                         Bienvenue à TECHNO-LAB <span class="text-red-600">ISTA</span>
-                  
+
                       </h1>
                       <p className="text-gray-700 text-base sm:text-lg leading-relaxed">
                         🚀 Découvrez l'excellence avec Techno-Lab ISTA
@@ -20,24 +20,27 @@ function MainContent() {
 
                       
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-center text-sm sm:text-base text-blue-800 font-semibold my-6">
-                        {[
-                          { icon: "📚", text: "Suivez votre étude en ligne" },
-                          { icon: "🎓", text: " Nos Étudiants actifs" },
-                          { icon: "👩‍🏫", text: "Les meilleurs Profs sont chez nous 🔥" },
-                          { icon: "🕒", text: "Emplois du temps à jour" },
-                          { icon: "📨", text: "Alertes en temps réel" },
-                          { icon: "🏆", text: "100% motivation garantie" },
-                        ].map((item, i) => (
-                          <div
-                            key={i}
-                            className="bg-white rounded-xl shadow-md py-4 hover:shadow-lg transition transform opacity-0 animate-fade-in-up"
-                            style={{ animationDelay: `${i * 0.2}s`, animationFillMode: 'forwards' }}
-                          >
-                            <div className="text-2xl">{item.icon}</div>
-                            <p className="mt-2">{item.text}</p>
+                            {[
+                              { icon: "📚", text: "Suivez votre étude en ligne" },
+                              { icon: "🎓", text: " Nos Étudiants actifs" },
+                              { icon: "👩‍🏫", text: "Les meilleurs Profs sont chez nous 🔥" },
+                              { icon: "🕒", text: "Emplois du temps à jour" },
+                              { icon: "📨", text: "Alertes en temps réel" },
+                              { icon: "🏆", text: "100% motivation garantie" },
+                            ].map((item, i) => (
+                              <div
+                                key={i}
+                                className="bg-white rounded-xl shadow-md py-4 hover:shadow-lg 
+                                transition transform active:scale-95 hover:scale-105 duration-300 
+                                opacity-0 animate-fade-in-up"
+                                style={{ animationDelay: `${i * 0.2}s`, animationFillMode: 'forwards' }}
+                              >
+                                <div className="text-2xl">{item.icon}</div>
+                                <p className="mt-2">{item.text}</p>
+                              </div>
+                            ))}
                           </div>
-                        ))}
-                      </div>
+
                     </div>
 
                     {/* Anime mon image */}

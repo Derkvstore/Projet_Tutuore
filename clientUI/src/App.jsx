@@ -31,7 +31,14 @@ const router = createBrowserRouter([
             element: <Protected_Route><MainContent /></Protected_Route>
           },
 
-          // Ajout de la page Polique Confidentialite
+          // Ajout de la page Dashboard Admin
+
+          {
+            path: '/AdminDashboard',
+            element: <AdminDashboard/>
+          },
+
+          // Ajout de la page Filiere et emploi du temps 
 
           {
             path: '/filieres',
