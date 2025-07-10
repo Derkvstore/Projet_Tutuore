@@ -1,28 +1,14 @@
-import DashboardLayout from './components/DashboardLayout'
-import Card from './components/Card'
-import Table from './components/Table'
-// import { FaUsers, FaBook, FaMoneyBill } from 'react-icons/fa'
+// src/pages/AdminDashboard.jsx
 
 function AdminDashboard() {
-    return <div>
-        <DashboardLayout>
-        <h1 className="text-2xl font-bold mb-6">Tableau de bord Administrateur</h1>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {/* <Card title="Étudiants" value="1280" icon={<FaUsers />} /> */}
-            {/* <Card title="Cours" value="42" icon={<FaBook />} /> */}
-            {/* <Card title="Paiements" value="7,500 FCFA" icon={<FaMoneyBill />} /> */}
-        </div>
-
-        <Table
-            columns={['Nom', 'Email', 'Statut']}
-            data={[
-            ['Moussa Koné', 'moussa@school.com', 'Étudiant'],
-            ['Aminata Diallo', 'aminata@school.com', 'Admin'],
-            ]}
-        />
-        </DashboardLayout>
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-blue-50 text-center">
+      <div className="bg-white p-10 rounded-xl shadow-lg">
+        <h1 className="text-3xl font-bold text-blue-700 mb-4">Tableau de bord Administrateur 🛠️</h1>
+        <p className="text-gray-600">Bienvenue sur votre espace d’administration. Gérez les utilisateurs, les filières, les statistiques et plus.</p>
+      </div>
     </div>
+  );
 }
 
-export default AdminDashboard
+export default AdminDashboard;
