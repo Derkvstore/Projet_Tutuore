@@ -1,9 +1,54 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FaHome, FaSignInAlt, FaUserPlus, FaShieldAlt } from 'react-icons/fa';
+import { useState, useEffect } from 'react'; // Importez useEffect
+import { Link, useNavigate } from 'react-router-dom'; // Importez useNavigate
+import { FaHome, FaSignInAlt, FaUserPlus, FaShieldAlt, FaTachometerAlt, FaSignOutAlt } from 'react-icons/fa'; // Nouvelles icônes
+import toast from 'react-hot-toast'
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState(null);
+  const navigate = useNavigate(); // Initialisez le hook de navigation
+
+  // Utilisez useEffect pour vérifier l'état de connexion et le rôle au chargement du composant
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const role = localStorage.getItem('userRole');
+    if (token && role) {
+      setIsLoggedIn(true);
+      setUserRole(role);
+    } else {
+      setIsLoggedIn(false);
+      setUserRole(null);
+    }
+
+    // Ajoutez un écouteur pour les changements dans localStorage (par exemple, déconnexion ailleurs)
+    const handleStorageChange = () => {
+      const updatedToken = localStorage.getItem('token');
+      const updatedRole = localStorage.getItem('userRole');
+      setIsLoggedIn(!!updatedToken);
+      setUserRole(updatedRole);
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []); // Le tableau vide assure que l'effet ne s'exécute qu'une fois au montage
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userRole');
+    setIsLoggedIn(false);
+    setUserRole(null);
+    toast.success("Déconnexion réussie ! 👋");
+    navigate('/'); // Rediriger vers la page d'accueil après déconnexion
+  };
+
+  // Déterminez le chemin du tableau de bord en fonction du rôle
+  const dashboardPath = userRole 
+    ? `/${userRole}Dashboard` 
+    : '/'; // Fallback au cas où
 
   return (
     <header className="bg-white shadow-md sticky top-0 z-50 animate-fade-in">
@@ -16,9 +61,8 @@ function Navbar() {
             className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-blue-600 shadow-md object-cover"
           />
          <span className="text-base sm:text-lg md:text-xl font-extrabold uppercase tracking-wide text-blue-600">
-  Institut Supérieur de Technologies Appliquées
-</span>
-
+            Institut Supérieur de Technologies Appliquées
+         </span>
         </div>
 
         {/* Burger menu */}
@@ -58,24 +102,55 @@ function Navbar() {
               <FaHome /> Accueil
             </Link>
           </li>
-          <li className="text-center md:text-left">
-            <Link
-              to="/login"
-              className="flex items-center gap-2 py-2 px-4 rounded hover:bg-blue-100 hover:text-blue-800 transition duration-200"
-            >
-              <FaSignInAlt /> Connexion
-            </Link>
-          </li>
-          <li className="text-center md:text-left">
-            <Link
-              to="/register"
-              className="flex items-center gap-2 py-2 px-4 rounded hover:bg-blue-100 hover:text-blue-800 transition duration-200"
-            >
-              <FaUserPlus /> Inscription
-            </Link>
-          </li>
+          
+          {/* Afficher ces liens si l'utilisateur N'EST PAS connecté */}
+          {!isLoggedIn && (
+            <>
+              <li className="text-center md:text-left">
+                <Link
+                  to="/login"
+                  className="flex items-center gap-2 py-2 px-4 rounded hover:bg-blue-100 hover:text-blue-800 transition duration-200"
+                >
+                  <FaSignInAlt /> Connexion
+                </Link>
+              </li>
+              <li className="text-center md:text-left">
+                <Link
+                  to="/register"
+                  className="flex items-center gap-2 py-2 px-4 rounded hover:bg-blue-100 hover:text-blue-800 transition duration-200"
+                >
+                  <FaUserPlus /> Inscription
+                </Link>
+              </li>
+            </>
+          )}
 
-          {/* Politique de confidentialité */}
+          {/* Afficher ces liens si l'utilisateur EST connecté */}
+          {isLoggedIn && (
+            <>
+              // ...
+              <li className="text-center md:text-left">
+                <Link
+                  to={dashboardPath} // Le commentaire est maintenant à l'extérieur des accolades
+                  className="flex items-center gap-2 py-2 px-4 rounded hover:bg-blue-100 hover:text-blue-800 transition duration-200"
+                >
+                  <FaTachometerAlt /> Mon Tableau de Bord
+                </Link>
+              </li>
+
+              <li className="text-center md:text-left">
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 py-2 px-4 rounded hover:bg-red-100 hover:text-red-800 transition duration-200 w-full"
+                  aria-label="Déconnexion"
+                >
+                  <FaSignOutAlt /> Se déconnecter
+                </button>
+              </li>
+            </>
+          )}
+
+          {/* Politique de confidentialité (toujours visible) */}
           <li className="text-center md:text-left">
             <Link
               to="/politique-confidentialite"

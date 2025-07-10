@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; // Importez useNavigate
 import { loginAPI } from '../../apiCalls/auth';
 import toast from 'react-hot-toast';
 
 function Login() {
   const { role } = useParams();
+  const navigate = useNavigate(); // Initialisez le hook
 
   let [user, setUser] = useState({
     mail: '',
@@ -19,12 +20,13 @@ function Login() {
       response = await loginAPI({ ...user, role });
 
       if (response.success) {
+        // Stockez le token ET le rôle de l'utilisateur
         localStorage.setItem('token', response.token);
+        localStorage.setItem('userRole', role); // <-- Stockez le rôle ici
         toast.success(`${role ? role.toUpperCase() : ''} connecté avec succès ✅`);
-        // Redirection personnalisée
-        if (role === 'admin') window.location.href = '/AdminDashboard';
-        else if (role === 'enseignant') window.location.href = '/EnseignantDashboard';
-        else window.location.href = '/StudentDashboard';
+        
+        // Redirigez TOUJOURS vers la page d'accueil '/'
+        navigate('/'); 
       } else {
         toast.error(response.message);
       }
