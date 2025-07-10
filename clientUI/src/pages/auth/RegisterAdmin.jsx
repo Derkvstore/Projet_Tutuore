@@ -1,8 +1,11 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { siginAPI } from "../../apiCalls/auth";
+import { useNavigate } from 'react-router-dom'; // ✅ Ajout : Import de useNavigate
 
 function RegisterAdmin() {
+  const navigate = useNavigate(); // ✅ Ajout : Initialisation de useNavigate
+
   const [admin, setAdmin] = useState({
     firstname: '',
     lastname: '',
@@ -11,7 +14,7 @@ function RegisterAdmin() {
     confirmPassW: ''
   });
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // Bien que non utilisé, gardé si future implémentation
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -25,9 +28,13 @@ function RegisterAdmin() {
       const response = await siginAPI({ ...admin, role: "admin" });
 
       if (response.success) {
-        localStorage.setItem("token", response.token);
-        toast.success("Administrateur enregistré avec succès ✅");
-        window.location.href = "/AdminDashboard";
+        // ❌ CORRECTION : Suppression du stockage du token ici. 
+        // Le token est obtenu lors de la CONNEXION, pas de l'inscription.
+        // localStorage.setItem("token", response.token); 
+
+        toast.success("Administrateur enregistré avec succès ✅. Veuillez vous connecter.");
+        // ✅ CORRECTION : Utilisation de useNavigate pour la redirection SPA
+        navigate("/login/admin"); 
       } else {
         toast.error(response.message);
       }

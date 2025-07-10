@@ -1,8 +1,11 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { siginAPI } from "../../apiCalls/auth";
+import { useNavigate } from 'react-router-dom'; // ✅ Ajout : Import de useNavigate
 
 function RegisterEnseignant() {
+  const navigate = useNavigate(); // ✅ Ajout : Initialisation de useNavigate
+
   const [teacher, setTeacher] = useState({
     firstname: '',
     lastname: '',
@@ -12,7 +15,7 @@ function RegisterEnseignant() {
     confirmPassW: ''
   });
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // Bien que non utilisé, gardé si future implémentation
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -26,9 +29,13 @@ function RegisterEnseignant() {
       const response = await siginAPI({ ...teacher, role: "enseignant" });
 
       if (response.success) {
-        localStorage.setItem("token", response.token);
-        toast.success("Enseignant enregistré avec succès ✅");
-        window.location.href = "/EnseignantDashboard";
+        // ❌ CORRECTION : Suppression du stockage du token ici. 
+        // Le token est obtenu lors de la CONNEXION, pas de l'inscription.
+        // localStorage.setItem("token", response.token); 
+
+        toast.success("Enseignant enregistré avec succès ✅. Veuillez vous connecter.");
+        // ✅ CORRECTION : Utilisation de useNavigate pour la redirection SPA
+        navigate("/login/enseignant"); 
       } else {
         toast.error(response.message);
       }

@@ -1,8 +1,11 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { siginAPI } from "../../apiCalls/auth";
+import { useNavigate } from 'react-router-dom'; // ✅ Ajout : Import de useNavigate
 
 function RegisterEtudiant() {
+  const navigate = useNavigate(); // ✅ Ajout : Initialisation de useNavigate
+
   const [user, setUser] = useState({
     firstname: "",
     lastname: "",
@@ -12,7 +15,7 @@ function RegisterEtudiant() {
     mail: "",
     passW: "",
     confirmPassW: "",
-    photo: "",
+    photo: null, // Initialiser à null ou une chaîne vide
     date_Naissance: "",
   });
 
@@ -26,20 +29,25 @@ function RegisterEtudiant() {
       return;
     }
 
+    
+    
     const formData = new FormData();
     Object.entries(user).forEach(([key, value]) => {
-      if (key !== "confirmPassW") {
+      if (key !== "confirmPassW") { // Ne pas envoyer confirmPassW au backend
         formData.append(key, value);
       }
     });
+    const response = await siginAPI(formData);
+    
 
     try {
+      // ✅ Utilisation de l'objet user directement, sans FormData pour cet appel API
       const response = await siginAPI({ ...user, role: "etudiant" });
 
       if (response.success) {
-        localStorage.setItem("token", response.token);
-        toast.success(response.message);
-        window.location.href = "/StudentDashboard";
+       
+        toast.success(response.message + ". Veuillez vous connecter."); // Ajout du message pour se connecter
+        navigate("/login/etudiant"); 
       } else {
         toast.error(response.message);
       }
@@ -112,6 +120,7 @@ function RegisterEtudiant() {
           <label className="block text-sm font-medium text-gray-700 mb-1">Photo d'identité</label>
           <input
             type="file"
+
             onChange={(e) => setUser({ ...user, photo: e.target.files[0] })}
             className="block w-full text-sm text-gray-600
             file:mr-4 file:py-2 file:px-4
@@ -143,6 +152,7 @@ function RegisterEtudiant() {
   );
 }
 
+// Les composants InputField et SelectFiliere sont des helpers et sont OK.
 function InputField({ type = "text", placeholder, value, onChange }) {
   return (
     <input
